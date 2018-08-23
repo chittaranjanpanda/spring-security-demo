@@ -1,0 +1,27 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: jdbc
+# THYMELEAF (ThymeleafAutoConfiguration)
+  thymeleaf:
+    cache: true
+    check-template-location: true
+    enabled: true
+    encoding: UTF-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    template-resolver-order: 1
+  datasource:
+      url: jdbc:h2:~/test
+      platform: h2
+      data-username: sa
+      data-password:
+      driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+

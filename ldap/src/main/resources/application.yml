@@ -1,0 +1,30 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: ldap-auth
+# THYMELEAF (ThymeleafAutoConfiguration)
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    enabled: true
+    encoding: UTF-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    template-resolver-order: 1
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+  ldap:
+    embedded:
+      ldif: classpath:ldap.ldif
+      base-dn: dc=demo,dc=com
+      port: 8389
+
+
+
+
+
+

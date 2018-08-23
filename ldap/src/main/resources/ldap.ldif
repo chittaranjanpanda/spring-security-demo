@@ -1,0 +1,51 @@
+dn: dc=demo,dc=com
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: demo
+o: FrankMoley
+
+dn: ou=people,dc=demo,dc=com
+objectclass: top
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=demo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: groups
+
+dn: uid=admin,ou=people,dc=demo,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Admin Admin
+sn: Admin
+givenName: Administrator
+mail: admin@demo.com
+uid: admin
+userPassword: {SSHA}8VjPIyBXeSgNHF55VQ4L7Z3DVn5C90Frr9Hb+Q==
+
+dn: uid=user,ou=people,dc=demo,dc=com
+objectClass: inetOrgPerson
+cn: User User
+sn: User
+givenName: User
+mail: user@demo.com
+uid: user
+userPassword: {SSHA}TkB69F51ispUwx6XP1FoYDP4kq0EdR9m33IVNQ==
+
+dn: cn=admin,ou=groups,dc=demo,dc=com
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: admins
+uniqueMember: uid=admin,ou=people,dc=demo,dc=com
+
+dn: cn=user,ou=groups,dc=demo,dc=com
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: users
+uniqueMember: uid=admin,ou=people,dc=demo,dc=com
+uniqueMember: uid=user,ou=people,dc=demo,dc=com
+
