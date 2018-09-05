@@ -5,9 +5,6 @@ import com.demo.ldap.properties.LdapProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,8 +14,6 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +42,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    @Order(1)
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.ldapAuthentication()
                 .userDnPatterns("uid={0}, ou=people")
@@ -69,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     /*Active Directory Set up*/
 
-    // if only AD Auth is required
+    // if only AD Auth is required . comment other configure method.
     /*public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
         // don't erase credentials if you plan to get them later
