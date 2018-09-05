@@ -1,10 +1,14 @@
 package com.demo.ldap.config;
 
 
+import com.demo.ldap.properties.LdapProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,10 +18,14 @@ import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity ( prePostEnabled = true )
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private LdapProperties ldapProperties;
 
     @Bean
     public GrantedAuthoritiesMapper authoritiesMapper() {
@@ -39,6 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Order(1)
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.ldapAuthentication()
                 .userDnPatterns("uid={0}, ou=people")
@@ -50,32 +59,45 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordCompare()
                 .passwordEncoder(new LdapShaPasswordEncoder())
                 .passwordAttribute("userPassword");
-    }
 
-    /*// Active Directory Set up
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+        // for AD
         auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
-
         // don't erase credentials if you plan to get them later
         // (e.g using them for another web service call)
-        auth.eraseCredentials(false);
+        auth.eraseCredentials(true);
     }
+
+    /*Active Directory Set up*/
+
+    // if only AD Auth is required
+    /*public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
+        // don't erase credentials if you plan to get them later
+        // (e.g using them for another web service call)
+        auth.eraseCredentials(true);
+    }*/
+
+    // AuthenticationManager for extending auth with single/multiple providers
+   /* @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(Arrays.asList(activeDirectoryLdapAuthenticationProvider()));
+    }*/
 
     @Bean
     public ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider() {
         ActiveDirectoryLdapAuthenticationProvider adProvider =
-                new ActiveDirectoryLdapAuthenticationProvider("demo.com", "ldap://demo.com:389");
+                new ActiveDirectoryLdapAuthenticationProvider(ldapProperties.getDomain(),
+                        ldapProperties.getUrl(), ldapProperties.getRootDn());
         // set pattern if it exists
         // The following example would authenticate a user if they were a member
         // of the ServiceAccounts group
         // (&(objectClass=user)(userPrincipalName={0})
         //   (memberof=CN=ServiceAccounts,OU=example,DC=demo,DC=com))
-        adProvider.setSearchFilter("(&(objectClass=user)(userPrincipalName={0})");
+        adProvider.setSearchFilter(ldapProperties.getSearchFilter());
         adProvider.setConvertSubErrorCodesToExceptions(true);
         adProvider.setUseAuthenticationRequestCredentials(true);
+        adProvider.setAuthoritiesMapper(authoritiesMapper());
+
         return adProvider;
-    }*/
+    }
 }

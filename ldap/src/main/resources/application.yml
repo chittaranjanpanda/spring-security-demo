@@ -18,10 +18,19 @@ spring:
       enabled: true
       port: 35729
   ldap:
-    embedded:
-      ldif: classpath:ldap.ldif
-      base-dn: dc=demo,dc=com
-      port: 8389
+      embedded:
+        ldif: classpath:ldap.ldif
+        base-dn: dc=demo,dc=com
+        port: 8389
+debug: false
+
+demo:
+  ldap:
+    domain: area1.demo.local
+    url: ldap://servername.area1.demo.local:389
+    root-dn: OU=IT,OU=Users,OU=IN01,OU=IN,OU=ITR01,DC=area1,DC=demo,DC=local
+    search-filter: sAMAccountName={1}
+    #search-filter: (&(objectClass=user)(sAMAccountName={1})(memberof=CN=!IN01_ADMIN,OU=Distribution Lists,OU=Groups,OU=IN01,OU=IN,OU=ITR01,DC=area1,DC=demo,DC=local))
 
 
 

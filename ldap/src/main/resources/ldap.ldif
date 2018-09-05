@@ -25,7 +25,7 @@ sn: Admin
 givenName: Administrator
 mail: admin@demo.com
 uid: admin
-userPassword: {SSHA}8VjPIyBXeSgNHF55VQ4L7Z3DVn5C90Frr9Hb+Q==
+userPassword: {SSHA}i3jWoJHLgnbNJHV0TRiKkrHm/V2wzYQbQfSvsw==
 
 dn: uid=user,ou=people,dc=demo,dc=com
 objectClass: inetOrgPerson
@@ -34,7 +34,7 @@ sn: User
 givenName: User
 mail: user@demo.com
 uid: user
-userPassword: {SSHA}TkB69F51ispUwx6XP1FoYDP4kq0EdR9m33IVNQ==
+userPassword: {SSHA}ziGE99+yJHyslo4zLC1K4so0HtL8+bB1krHNNg==
 
 dn: cn=admin,ou=groups,dc=demo,dc=com
 objectclass: top
